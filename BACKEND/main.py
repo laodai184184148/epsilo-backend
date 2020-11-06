@@ -2,7 +2,6 @@ from typing import List
 from datetime import datetime, timedelta
 from fastapi import Depends, FastAPI, HTTPException, Request, Response,status
 from sqlalchemy.orm import Session
-from models import user,token
 from db.database import SessionLocal, engine
 from api.api_v1.api import api_router
 from api import deps
@@ -16,12 +15,9 @@ from fastapi.security import (
     OAuth2PasswordRequestForm,
     SecurityScopes,
 )
-REQUEST_TIMEOUT_ERROR = 1  # Threshold
 import asyncio
 from schemas import exception
 from fastapi.responses import JSONResponse
-import mysql.connector
-user.Base.metadata.create_all(bind=engine)
 from fastapi.middleware.cors import CORSMiddleware
 
 from provider import vietnamobile, viettel, vinaphone, mobifone, sim_processing, error_handler, end_point, thread_processing

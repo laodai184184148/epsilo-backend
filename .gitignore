@@ -1,6 +1,7 @@
 .env
 .vscode
 .idea
+env
 **/BACKEND/env/
 **/BACKEND/.vscode/
 **/BACKEND/__pycache__/
