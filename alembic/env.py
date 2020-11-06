@@ -17,9 +17,12 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+import os
+from dotenv import load_dotenv,find_dotenv
+load_dotenv(find_dotenv())
 import sys
 import site
-site.addsitedir('c:/Users/Admin/Desktop/EPSILO/BACKEND')
+site.addsitedir(os.getenv("PATH_TO_BACKEND_FOLDER"))
 from db.base import Base
 target_metadata = Base.metadata
 
@@ -41,7 +44,14 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+def get_url():
+    user = os.getenv("MYSQL_USER")
+    password = os.getenv("MYSQL_PASSWORD")
+    server = os.getenv("MYSQL_SERVER")
+    db = os.getenv("MYSQL_DB")
+    return f"mysql+pymysql://{user}:{password}@{server}/{db}"
+
+    url = get_url
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -60,10 +70,10 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+    configuration = config.get_section(config.config_ini_section)
+    configuration["sqlalchemy.url"] = get_url()
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
+        configuration, prefix="sqlalchemy.", poolclass=pool.NullPool,
     )
 
     with connectable.connect() as connection:
