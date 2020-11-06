@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     repeat = True
     
     main_Thread = []
+    
+    API_V1_STR: str = "/api/v1"
 ################################
     AUTH_PLUGIN:str ='mysql_native_password'
 
